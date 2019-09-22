@@ -15,7 +15,7 @@ entity hfrisc_soc is
 end hfrisc_soc;
 
 architecture top_level of hfrisc_soc is
-	signal clock, boot_enable, ram_enable_n, stall, ram_dly, rff1, reset: std_logic;
+	signal boot_enable, ram_enable_n, stall, ram_dly, rff1, reset: std_logic;
 	signal address, data_read, data_write, data_read_boot, data_read_ram: std_logic_vector(31 downto 0);
 	signal ext_irq: std_logic_vector(7 downto 0);
 	signal data_we, data_w_n_ram: std_logic_vector(3 downto 0);
@@ -27,37 +27,26 @@ architecture top_level of hfrisc_soc is
 begin
 
 
-	-- clock divider (25MHz clock from 50MHz main clock for Spartan3 Starter Kit)
-	-- process (reset_in, clk_in, clock)
-	-- begin
-		-- if reset_in = '1' then
-			-- clock <= '0';
-		-- else
-			-- if clk_in'event and clk_in='1' then
-				-- clock <= not clock;
-			-- end if;
-		-- end if;
-	-- end process;
 
 	-- reset synchronizer
-	process (clock, reset_in)
+	process (clk_in, reset_in)
 	begin
 		if (reset_in = '1') then
 			rff1 <= '1';
 			reset <= '1';
-		elsif (clock'event and clock = '1') then
+		elsif (clk_in'event and clk_in = '1') then
 			rff1 <= '0';
 			reset <= rff1;
 		end if;
 	end process;
 
 
-	process (reset, clock, ext_irq, ram_enable_n)
+	process (reset, clk_in, ext_irq, ram_enable_n)
 	begin
 		if reset = '1' then
 			ram_dly <= '0';
 			periph_dly <= '0';
-		elsif clock'event and clock = '1' then
+		elsif clk_in'event and clk_in = '1' then
 			ram_dly <= not ram_enable_n;
 			periph_dly <= periph;
 		end if;
@@ -74,7 +63,7 @@ begin
 
 	-- HF-RISCV core
 	processor: entity work.processor
-	port map(	clk_i => clock,
+	port map(	clk_i => clk_in,
 			rst_i => reset,
 			stall_i => stall,
 			addr_o => address,
@@ -93,7 +82,7 @@ begin
 
 	peripherals: entity work.peripherals
 	port map(
-		clk_i => clock,
+		clk_i => clk_in,
 		rst_i => reset,
 		addr_i => address,
 		data_i => data_write_periph,
@@ -110,7 +99,7 @@ begin
 	boot_ram: entity work.ram
 	generic map (memory_type => "DEFAULT")
 	port map (
-		clk			=> clock,
+		clk			=> clk_in,
 		enable			=> boot_enable,
 		write_byte_enable	=> "0000",
 		address			=> address(31 downto 2),
@@ -125,7 +114,7 @@ begin
 					address_width => address_width,
 					bank => 0)
 	port map(
-		clk 	=> clock,
+		clk 	=> clk_in,
 		addr 	=> address(address_width -1 downto 2),
 		cs_n 	=> ram_enable_n,
 		we_n	=> data_w_n_ram(0),
@@ -139,7 +128,7 @@ begin
 					address_width => address_width,
 					bank => 1)
 	port map(
-		clk 	=> clock,
+		clk 	=> clk_in,
 		addr 	=> address(address_width -1 downto 2),
 		cs_n 	=> ram_enable_n,
 		we_n	=> data_w_n_ram(1),
@@ -153,7 +142,7 @@ begin
 					address_width => address_width,
 					bank => 2)
 	port map(
-		clk 	=> clock,
+		clk 	=> clk_in,
 		addr 	=> address(address_width -1 downto 2),
 		cs_n 	=> ram_enable_n,
 		we_n	=> data_w_n_ram(2),
@@ -167,7 +156,7 @@ begin
 					address_width => address_width,
 					bank => 3)
 	port map(
-		clk 	=> clock,
+		clk 	=> clk_in,
 		addr 	=> address(address_width -1 downto 2),
 		cs_n 	=> ram_enable_n,
 		we_n	=> data_w_n_ram(3),
