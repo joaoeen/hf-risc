@@ -2,18 +2,18 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library NX;
-use NX.nxPackage.all;
+--slibrary NX;
+--use NX.nxPackage.all;
 
 entity ram_2k8 is
-	generic port(
+	generic(
 		mem_ctxt : string
 	);
     port(
 	CLK	:   in std_logic;
 	DI	:   in std_logic_vector(7 downto 0);
 	DO	:   out std_logic_vector(7 downto 0);
-	AD	:   in std_logic_vector(9 downto 0);
+	AD	:   in std_logic_vector(10 downto 0);
 	WE	:   in std_logic
     );
 end entity;
@@ -93,7 +93,7 @@ port map (
     , AA8  => AD(7)
     , AA9  => AD(8)
     , AA10 => AD(9)
-    , AA11 => OPEN
+    , AA11 => AD(10)
     , AA12 => OPEN
     , AA13 => OPEN
     , AA14 => OPEN

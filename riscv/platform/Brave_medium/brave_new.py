@@ -20,19 +20,20 @@ project.addFile('brave.vhd')
 
 project.addFiles([
 
-'../../core_rv32i/alu.vhd',
-'../../core_rv32i/bshifter.vhd',
-'../../core_rv32i/control.vhd',
-'../../core_rv32i/cpu.vhd',
-'../../core_rv32i/datapath.vhd',
-'../../core_rv32i/int_control.vhd',
-'../../core_rv32i/reg_bank.vhd',
+
 '../rams/boot_ram_brave.vhd',
 '../rams/ram_2k8_brave.vhd',
 '../rams/RAM_DATA.vhd',
 '../rams/ram.vhd',
-'../../../devices/controllers/uart/uart.vhd'
-'../../../devices/peripherals/basic_soc.vhd'
+'../../../devices/controllers/uart/uart.vhd',
+'../../../devices/peripherals/basic_soc.vhd',
+'../../core_rv32i/alu.vhd',
+'../../core_rv32i/bshifter.vhd',
+'../../core_rv32i/int_control.vhd',
+'../../core_rv32i/reg_bank.vhd',
+'../../core_rv32i/control.vhd',
+'../../core_rv32i/cpu.vhd',
+'../../core_rv32i/datapath.vhd'
 
 
 ])
