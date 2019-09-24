@@ -26,7 +26,7 @@ project.addFiles([
 '../rams/RAM_DATA.vhd',
 '../rams/ram.vhd',
 '../../../devices/controllers/uart/uart.vhd',
-'../../../devices/peripherals/basic_soc.vhd',
+'../../../devices/peripherals/minimal_soc_uart.vhd',
 '../../core_rv32i/alu.vhd',
 '../../core_rv32i/bshifter.vhd',
 '../../core_rv32i/int_control.vhd',

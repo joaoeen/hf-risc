@@ -20,11 +20,25 @@ end; --entity ram
 architecture logic of ram is
    constant ZERO          : std_logic_vector(31 downto 0) := "00000000000000000000000000000000"; 
 
+component ram_2k8 is
+	generic(
+		mem_ctxt : string
+	);
+    port(
+	CLK	:   in std_logic;
+	DI	:   in std_logic_vector(7 downto 0);
+	DO	:   out std_logic_vector(7 downto 0);
+	AD	:   in std_logic_vector(10 downto 0);
+	WE	:   in std_logic
+    );
+end component;
+
+
 begin
 
 
 
-   RAMB_inst0 : work.ram_2k8
+   RAMB_inst0 : ram_2k8
    generic map (
 		mem_ctxt	=> RAM0_DATA
 	)
@@ -35,7 +49,7 @@ begin
 		AD	=> address(12 downto 2),
 		WE	=> write_byte_enable(3));
 
-   RAMB_inst1 : work.ram_2k8
+   RAMB_inst1 : ram_2k8
    generic map (
 		mem_ctxt	=> RAM1_DATA
 	)
@@ -46,7 +60,7 @@ begin
 	AD	=> address(12 downto 2),
 	WE	=> write_byte_enable(2));
 
-   RAMB_inst2 : work.ram_2k8
+   RAMB_inst2 : ram_2k8
   generic map (
 		mem_ctxt	=> RAM2_DATA
 	)
@@ -57,7 +71,7 @@ begin
 	AD	=> address(12 downto 2),
 	WE	=> write_byte_enable(1));
 
-   RAMB_inst3 : work.ram_2k8
+   RAMB_inst3 : ram_2k8
   generic map (
 		mem_ctxt	=> RAM3_DATA
 	)
