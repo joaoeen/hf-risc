@@ -23,8 +23,8 @@ def create_mem (data):
 			else:
 				j = j + 1
 				
-	if num_bytes < 6144:
-		for i in range(num_bytes, 6144):
+	if num_bytes < 2048:
+		for i in range(num_bytes, 2048):
 			num_bytes = num_bytes + 1
 			if j == 0:
 				f.write("\"")
@@ -34,7 +34,7 @@ def create_mem (data):
 				j = 0
 			else:
 				j = j + 1
-
+	print(num_bytes)
 	if j != 0 :
 		f.write("\"")
 	f.write(";\n\n\n")
@@ -42,6 +42,8 @@ def create_mem (data):
 
 f = open("RAM_DATA.vhd", "w+")
 f.write("-- This file is automatically generate and will be overwriten the next time the script runs\n\n\n\n\n")
+f.write("library ieee;\nuse ieee.std_logic_1164.all;\n\npackage RAM_DATA is\n\n")
+
 
 #Create mem constant 0
 f.write("constant RAM0 : string := ")
@@ -70,5 +72,7 @@ data_file = open("RAM3.txt", "r")
 data = data_file.readlines()
 create_mem (data)
 data_file.close()
+
+f.write("\n\nend package RAM_DATA;")
 
 f.close()
