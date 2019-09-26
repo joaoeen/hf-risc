@@ -38,6 +38,8 @@ project.addFiles([
 
 ])
 
+project.addMappingDirective('getModels(reg_bank_registers)', 'RAM', 'DFF')
+
 project.setOptions({
     'DefaultFSMEncoding':           'Binary', # *'OneHot' 'OneHotSafe' 'OneHotSafeExtra' 'Binary'
     'DefaultRAMMapping':            'RAM', # *'RF' 'RAM'
@@ -72,6 +74,13 @@ project.setOptions({
     'VariantAwareSynthesis':        'Yes' # If set to 'Yes' synthesis will automatically map to equivalent resource when specific resource is depleted.
     })
 
+project.addPads({
+    'clk_in':        {'location': 'IO_B12D09P', 'type': 'LVCMOS_3.3V_2mA', 'slewRate': 'Slow'}, ## 25MHz
+    'reset_in':      {'location': 'IO_B10D07P', 'type': 'LVCMOS_1.8V_2mA', 'slewRate': 'Slow'}, ## HEADER_IO/FPGA B5
+    'uart_read':         {'location': 'IO_B0D06P', 'type': 'LVCMOS_3.3V_2mA', 'slewRate': 'Slow'}, ## HEADER_IO/FPGA A1
+    'uart_write':         {'location': 'IO_B0D07P', 'type': 'LVCMOS_3.3V_2mA', 'slewRate': 'Slow'} ## HEADER_IO/FPGA A2
+	})
+
 kit = NX1H35_EK_V2.Kit()
 
 project.createClock('getPort(clk_in)', 'clk_in', 40000)
@@ -90,10 +99,10 @@ if not project.place():
 
 project.save('placed.nxm')
 
-##if not project.route():
-##	sys.exit(1)
+if not project.route():
+	sys.exit(1)
 
-##project.save('routed.nxm')
+project.save('routed.nxm')
 
 #reports
 project.reportInstances()
@@ -106,7 +115,7 @@ analyzer.launch()
 analyzer.destroy()
 
 #bitstream
-##project.generateBitstream('payload_x.nxb')
+project.generateBitstream('riscv_kit.nxb')
 
 #power consuption
 project.reportPowerConsumption()

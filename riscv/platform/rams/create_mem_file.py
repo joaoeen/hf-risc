@@ -11,32 +11,35 @@ def create_mem (data):
 	for x in data:
 		x = x.replace('"','')
 		x = x.replace(' ','')
-		for i in range(1,len(x),2):
+		for i in range(1,len(x)-1,2):
 			bin = "{0:08b}".format(int(x[-(i+2):-i], 16))
 			num_bytes = num_bytes + 1
 			if j == 0:
 				f.write("\"")
 			f.write(bin + ",")
-			if j > 7:
+			if j >= 7:
 				f.write("\"&\n")
 				j = 0
 			else:
 				j = j + 1
+		
 				
-	if num_bytes < 2048:
-		for i in range(num_bytes, 2048):
+	if num_bytes < 2047:
+		for i in range(num_bytes, 2046):
 			num_bytes = num_bytes + 1
 			if j == 0:
 				f.write("\"")
 			f.write("00000000" + ",")
-			if j > 7:
+			if j >= 7:
 				f.write("\"&\n")
 				j = 0
 			else:
 				j = j + 1
+	num_bytes = num_bytes + 1
+	f.write("00000000" + "\"")
 	print(num_bytes)
-	if j != 0 :
-		f.write("\"")
+	#if j != 0 :
+	#	f.write("\"")
 	f.write(";\n\n\n")
 
 
@@ -46,28 +49,28 @@ f.write("library ieee;\nuse ieee.std_logic_1164.all;\n\npackage RAM_DATA is\n\n"
 
 
 #Create mem constant 0
-f.write("constant RAM0 : string := ")
+f.write("constant RAM0_DATA : string := ")
 data_file = open("RAM0.txt", "r")
 data = data_file.readlines()
 create_mem (data)
 data_file.close()
 
 #Create mem constant 1
-f.write("constant RAM1 : string := ")
+f.write("constant RAM1_DATA : string := ")
 data_file = open("RAM1.txt", "r")
 data = data_file.readlines()
 create_mem (data)
 data_file.close()
 
 #Create mem constant 2
-f.write("constant RAM2 : string := ")
+f.write("constant RAM2_DATA : string := ")
 data_file = open("RAM2.txt", "r")
 data = data_file.readlines()
 create_mem (data)
 data_file.close()
 
 #Create mem constant 3
-f.write("constant RAM3 : string := ")
+f.write("constant RAM3_DATA : string := ")
 data_file = open("RAM3.txt", "r")
 data = data_file.readlines()
 create_mem (data)
